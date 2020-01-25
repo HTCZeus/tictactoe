@@ -1,0 +1,43 @@
+body {
+  max-width: 450px;
+  margin: auto;
+  margin-top: 200px;
+}
+
+#mainTable td {
+  height: 150px;
+  width: 150px;
+  cursor: pointer;
+  text-align: center;
+  font-size: 65px;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #333;
+}
+
+#mainTable td:hover {
+  opacity: 0.4;
+}
+
+#mainTable .x {
+  background-color: lightcoral;
+}
+
+#mainTable .o {
+  background-color: lightgreen;
+}
+
+#buttonReset {
+  display: none;
+  height: 50px;
+  width: 150px;
+  float: right;
+}
+.result {
+  display: none;
+  line-height: 50px;
+  font-size: 25px;
+}
+#winner {
+  font-size: 35px;
+  font-weight: bold;
+}

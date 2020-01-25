@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Page Title</title>
+    <link rel="stylesheet" type="text/css" href="tictoe.css" />
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.js"
+      integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      var tableArray = [
+        [null, null, null],
+        [null, null, null],
+        [null, null, null]
+      ];
+      var PLAYER = "x";
+      var GAME_STATUS = null;
+      $(function() {
+        $("#mainTable td").on("click", function() {
+          if (GAME_STATUS == null) {
+            $("#buttonReset").show();
+            GAME_STATUS = 1;
+          }
+          if (GAME_STATUS != 1) return;
+          var x = $(this).attr("data-x");
+          var y = $(this).attr("data-y");
+
+          if (tableArray[y][x] == null) {
+            tableArray[y][x] = PLAYER;
+            Control();
+            DrawTable();
+
+            if (PLAYER == "x") {
+              PLAYER = "o";
+            } else if (PLAYER == "o") {
+              PLAYER = "x";
+            }
+          }
+        });
+
+        DrawTable();
+      });
+
+      function DrawTable() {
+        var d_x = 0;
+        var d_y = 0;
+
+        tableArray.forEach(satir => {
+          satir.forEach(hucre => {
+            var indis = d_y * 3 + d_x;
+            if (hucre == "x") {
+              $($("#mainTable td")[indis])
+                .addClass("x")
+                .html("X");
+            } else if (hucre == "o") {
+              $($("#mainTable td")[indis])
+                .addClass("o")
+                .html("O");
+            } else {
+              $($("#mainTable td")[indis])
+                .removeClass("o")
+                .html("");
+              $($("#mainTable td")[indis])
+                .removeClass("x")
+                .html("");
+            }
+
+            d_x++;
+          });
+          d_y++;
+          d_x = 0;
+        });
+      }
+      function Control() {
+        var allSame = line => {
+          return (
+            line.every(cell => cell === "x") || line.every(cell => cell === "o")
+          );
+        };
+
+        var transposedArray = tableArray[0].map((col, i) =>
+          tableArray.map(row => row[i])
+        );
+
+        tableArray.forEach(satir => {
+          if (allSame(satir)) GAME_STATUS = 0;
+        });
+
+        transposedArray.forEach(satir => {
+          if (allSame(satir)) GAME_STATUS = 0;
+        });
+
+        if (allSame([tableArray[0][0], tableArray[1][1], tableArray[2][2]])) {
+          GAME_STATUS = 0;
+        }
+        if (allSame([tableArray[0][2], tableArray[1][1], tableArray[2][0]])) {
+          GAME_STATUS = 0;
+        }
+
+        contactedArray = tableArray[0]
+          .concat(tableArray[1])
+          .concat(tableArray[2]);
+
+        if (GAME_STATUS == 1 && contactedArray.every(cell => cell != null)) {
+          $("#winner").html("BERABERE");
+          $(".result").show();
+          $("#mainTable").css("opacity", 0.4);
+          return;
+        }
+
+        if (GAME_STATUS == 0) {
+          $("#winner").html(PLAYER);
+          $(".result").show();
+          $("#mainTable").css("opacity", 0.4);
+        }
+      }
+
+      function Reset() {
+        $("#mainTable").css("opacity", 1);
+        PLAYER = "x";
+        GAME_STATUS = null;
+        tableArray = [
+          [null, null, null],
+          [null, null, null],
+          [null, null, null]
+        ];
+        DrawTable();
+        $("#buttonReset").hide();
+        $(".result").hide();
+      }
+    </script>
+  </head>
+  <body>
+    <table id="mainTable" border="1">
+      <tr>
+        <td data-x="0" data-y="0"></td>
+        <td data-x="1" data-y="0"></td>
+        <td data-x="2" data-y="0"></td>
+      </tr>
+      <tr>
+        <td data-x="0" data-y="1"></td>
+        <td data-x="1" data-y="1"></td>
+        <td data-x="2" data-y="1"></td>
+      </tr>
+      <tr>
+        <td data-x="0" data-y="2"></td>
+        <td data-x="1" data-y="2"></td>
+        <td data-x="2" data-y="2"></td>
+      </tr>
+    </table>
+
+    <span class="result">Kazanan: <span id="winner"></span></span>
+    <button id="buttonReset" onclick="Reset()">
+      Reset
+    </button>
+  </body>
+
+  <script></script>
+</html>
